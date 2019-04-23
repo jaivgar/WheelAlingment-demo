@@ -1,0 +1,30 @@
+2019-04-11 10:30:21, com.zaxxer.hikari.HikariDataSource, INFO, Orchestrator - Starting...
+2019-04-11 10:30:21, com.zaxxer.hikari.pool.PoolBase, INFO, Orchestrator - Driver does not support get/set network timeout for connections. (com.mysql.jdbc.JDBC4Connection.getNetworkTimeout()I)
+2019-04-11 10:30:21, com.zaxxer.hikari.HikariDataSource, INFO, Orchestrator - Start completed.
+2019-04-11 10:30:23, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10440
+2019-04-11 10:30:23, eu.arrowhead.common.ArrowheadMain, INFO, Started server at: http://0.0.0.0:10440
+2019-04-11 10:30:23, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10442/serviceregistry
+2019-04-11 10:30:23, eu.arrowhead.common.Utility, INFO, Sending POST request to: http://0.0.0.0:10442/serviceregistry/register
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/query
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10444/authorization
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/query
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10444/authorization/token
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/query
+2019-04-11 10:30:39, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10448/gatekeeper/init_gsd
+2019-04-11 10:30:39, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/query
+2019-04-11 10:30:39, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10448/gatekeeper/init_icn
+2019-04-11 10:32:06, eu.arrowhead.core.orchestrator.OrchestratorResource, INFO, Received a triggerInterCloud request.
+2019-04-11 10:32:06, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10448/gatekeeper/init_gsd
+2019-04-11 10:32:06, eu.arrowhead.core.orchestrator.OrchestratorDriver, INFO, doGlobalServiceDiscovery returns with 1 GSDAnswers
+2019-04-11 10:32:06, eu.arrowhead.core.orchestrator.OrchestratorDriver, INFO, interCloudMatchmaking returns the first Cloud entry from the GSD results
+2019-04-11 10:32:06, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10448/gatekeeper/init_icn
+2019-04-11 10:32:07, eu.arrowhead.core.orchestrator.OrchestratorDriver, INFO, doInterCloudNegotiations returns with 1 possible providers
+2019-04-11 10:32:07, eu.arrowhead.core.orchestrator.OrchestratorService, INFO, triggerInterCloud returns 1 forms without icnMatchmaking
+2019-04-11 10:32:07, eu.arrowhead.core.orchestrator.OrchestratorResource, INFO, The orchestration process returned with 1 orchestration forms.
+2019-04-11 11:16:33, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/remove
+2019-04-11 11:16:33, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/remove
+2019-04-11 11:16:33, com.zaxxer.hikari.HikariDataSource, WARN, The shutdown() method has been deprecated, please use the close() method instead
+2019-04-11 11:16:33, com.zaxxer.hikari.HikariDataSource, INFO, Orchestrator - Shutdown initiated...
+2019-04-11 11:16:33, com.zaxxer.hikari.HikariDataSource, INFO, Orchestrator - Shutdown completed.
+2019-04-11 11:16:33, eu.arrowhead.common.ArrowheadMain, INFO, Stopping server at: http://0.0.0.0:10440
+2019-04-11 11:16:33, eu.arrowhead.common.ArrowheadMain, INFO, Stopping server at: http://0.0.0.0:10440

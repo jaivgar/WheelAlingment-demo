@@ -1,0 +1,8 @@
+2019-04-11 10:30:37, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10456
+2019-04-11 10:30:38, eu.arrowhead.common.ArrowheadMain, INFO, Started server at: http://0.0.0.0:10456
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:10442/serviceregistry
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Sending POST request to: http://0.0.0.0:10442/serviceregistry/register
+2019-04-11 10:30:38, eu.arrowhead.common.Utility, INFO, Sending POST request to: http://0.0.0.0:10442/serviceregistry/register
+2019-04-11 11:16:23, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/remove
+2019-04-11 11:16:24, eu.arrowhead.common.Utility, INFO, Sending PUT request to: http://0.0.0.0:10442/serviceregistry/remove
+2019-04-11 11:16:24, eu.arrowhead.common.ArrowheadMain, INFO, Stopping server at: http://0.0.0.0:10456

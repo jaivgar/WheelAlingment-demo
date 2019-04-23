@@ -1,0 +1,8 @@
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/filter/SupportAccessControlFilter.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/filter/AccessControlFilter.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/PingProvidersTask.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/ServiceRegistry.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/ServiceRegistryResource.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/RegistryUtils.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/ServiceRegistryMain.java
+/home/jaime/Documents/Github/core-java/serviceregistry/src/main/java/eu/arrowhead/core/serviceregistry/RemoveExpiredServicesTask.java

@@ -1,0 +1,5 @@
+eu/arrowhead/client/provider/TemperatureResource.class
+eu/arrowhead/client/provider/RequestVerification.class
+eu/arrowhead/client/provider/WorkflowResource.class
+eu/arrowhead/client/provider/RestResource.class
+eu/arrowhead/client/provider/WorkflowManager.class

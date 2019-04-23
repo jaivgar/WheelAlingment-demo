@@ -1,0 +1,16 @@
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/Elements.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/Metadata.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/AHSystem.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/SystemRegistry.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/SystemIdentity.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/SystemRegistryResource.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/SystemInformation.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/Endpoint.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/filter/AccessControlFilter.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/Information.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/SystemMetadata.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/SystemRegistryService.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/ServiceIdentity.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/HttpEndpoint.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/SystemRegistryMain.java
+/home/jaime/Documents/Github/core-java/systemregistry/src/main/java/eu/arrowhead/core/systemregistry/model/Identity.java

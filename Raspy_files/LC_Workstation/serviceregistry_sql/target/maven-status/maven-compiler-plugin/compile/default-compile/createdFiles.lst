@@ -1,0 +1,9 @@
+eu/arrowhead/core/serviceregistry_sql/RegistryUtils.class
+eu/arrowhead/core/serviceregistry_sql/PingProvidersTask.class
+eu/arrowhead/core/serviceregistry_sql/filter/AccessControlFilter.class
+eu/arrowhead/core/serviceregistry_sql/ServiceRegistryApi.class
+eu/arrowhead/core/serviceregistry_sql/ServiceRegistryResource.class
+eu/arrowhead/core/serviceregistry_sql/filter/SupportAccessControlFilter.class
+eu/arrowhead/core/serviceregistry_sql/support/OldServiceRegResource.class
+eu/arrowhead/core/serviceregistry_sql/RemoveExpiredServicesTask.class
+eu/arrowhead/core/serviceregistry_sql/ServiceRegistryMain.class

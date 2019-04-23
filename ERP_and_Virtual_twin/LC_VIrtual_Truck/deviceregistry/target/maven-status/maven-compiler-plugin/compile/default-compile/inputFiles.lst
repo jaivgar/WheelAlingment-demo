@@ -1,0 +1,16 @@
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/DeviceRegistryResource.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/DeviceRegistryMain.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/Identity.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/HttpEndpoint.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/DeviceMetadata.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/Metadata.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/DeviceRegistry.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/Endpoint.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/DeviceIdentity.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/DeviceInformation.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/SystemIdentity.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/Information.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/Elements.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/DeviceRegistryService.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/model/AHDevice.java
+/home/jaime/Documents/Github/core-java/deviceregistry/src/main/java/eu/arrowhead/core/deviceregistry/filter/AccessControlFilter.java

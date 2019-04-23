@@ -1,0 +1,1 @@
+2019-04-05 19:36:40, eu.arrowhead.common.Utility, INFO, Utility:getUri returning this: http://0.0.0.0:8456

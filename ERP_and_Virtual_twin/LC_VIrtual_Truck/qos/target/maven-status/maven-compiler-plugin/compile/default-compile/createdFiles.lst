@@ -1,0 +1,13 @@
+eu/arrowhead/qos/drivers/ReservationInfo.class
+eu/arrowhead/qos/algorithms/implementations/FTTSE.class
+eu/arrowhead/qos/drivers/IQoSDriver.class
+eu/arrowhead/qos/algorithms/VerifierAlgorithmFactory.class
+eu/arrowhead/qos/QoSResource.class
+eu/arrowhead/qos/drivers/ReservationResponse.class
+eu/arrowhead/qos/QoSManagerService.class
+eu/arrowhead/qos/algorithms/IVerifierAlgorithm.class
+eu/arrowhead/qos/drivers/implementations/FTTSE.class
+eu/arrowhead/qos/QoSMain.class
+eu/arrowhead/qos/algorithms/VerificationInfo.class
+eu/arrowhead/qos/algorithms/VerificationResponse.class
+eu/arrowhead/qos/drivers/DriversFactory.class
