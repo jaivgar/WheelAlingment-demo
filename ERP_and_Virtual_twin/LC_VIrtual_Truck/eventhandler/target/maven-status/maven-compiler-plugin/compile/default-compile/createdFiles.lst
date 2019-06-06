@@ -1,5 +1,0 @@
-eu/arrowhead/core/eventhandler/EventHandlerResource.class
-eu/arrowhead/core/eventhandler/filter/AccessControlFilter.class
-eu/arrowhead/core/eventhandler/EventHandlerService.class
-eu/arrowhead/core/eventhandler/DeleteExpiredFiltersTask.class
-eu/arrowhead/core/eventhandler/EventHandlerMain.class
