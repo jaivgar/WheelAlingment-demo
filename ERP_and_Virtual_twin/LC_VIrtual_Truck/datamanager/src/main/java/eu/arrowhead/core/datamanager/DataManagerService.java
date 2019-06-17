@@ -150,14 +150,14 @@ final class DataManagerService {
     /* Modifications Use Case Far Edge
      * 
      * Added new column Path, the path in the file system where it stores the files
-     * datetime throwing exception
+     * Invalid name for field datetime, name "stored" throwing exception for my version of MySQL
      */
     
     sql = "CREATE TABLE IF NOT EXISTS iot_files (\n"
       + "id BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,\n"
       + "did INT NOT NULL,\n"
       + "fid INT,\n"
-//      + "stored datetime NOT NULL,\n"
+      + "time_stored datetime NOT NULL,\n"
       + "cf int,\n"
       + "content blob,\n"
       + "filename varchar(64) NOT NULL,\n"
@@ -180,7 +180,7 @@ final class DataManagerService {
       + "did INT(8) NOT NULL,\n"
       + "ts BIGINT UNSIGNED NOT NULL,\n"
       + "msg BLOB NOT NULL,\n"
-      + "stored datetime,\n"
+      + "time_stored datetime,\n"
       + "FOREIGN KEY(did) REFERENCES iot_devices(id) ON DELETE CASCADE"
       + ")\n";
 
@@ -266,7 +266,7 @@ final class DataManagerService {
       int id = macToID(name, conn);
       if (id != -1) {
 	Statement stmt = conn.createStatement();
-	String sql = "INSERT INTO iot_messages(did, ts, msg, stored) VALUES("+id+", 0, '"+msg.toString()+"',NOW());"; //how to escape "
+	String sql = "INSERT INTO iot_messages(did, ts, msg, time_stored) VALUES("+id+", 0, '"+msg.toString()+"',NOW());"; //how to escape "
 	System.out.println(sql);
 	int mid = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 	ResultSet rs = stmt.getGeneratedKeys();
@@ -293,7 +293,7 @@ final class DataManagerService {
       System.out.println("Got id of: " + id);
       if (id != -1) {
 	Statement stmt = conn.createStatement();
-	String sql = "INSERT INTO iot_messages(did, ts, msg, stored) VALUES("+id+", 0, '"+msg.toString()+"',NOW());"; //how to escape "
+	String sql = "INSERT INTO iot_messages(did, ts, msg, time_stored) VALUES("+id+", 0, '"+msg.toString()+"',NOW());"; //how to escape "
 	System.out.println(sql);
 	int mid = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 	ResultSet rs = stmt.getGeneratedKeys();
@@ -354,7 +354,7 @@ final class DataManagerService {
 
       if (id != -1) {
 	Statement stmt = conn.createStatement();
-	String sql = "SELECT * FROM iot_messages WHERE did="+id+" ORDER BY stored DESC LIMIT "+count+";"; //how to escape "
+	String sql = "SELECT * FROM iot_messages WHERE did="+id+" ORDER BY time_stored DESC LIMIT "+count+";"; //how to escape "
 	System.out.println(sql);
 	ResultSet rs = stmt.executeQuery(sql);
 
@@ -416,7 +416,7 @@ final class DataManagerService {
       System.out.println("Got id of: " + id);
       if (id != -1) {
 	Statement stmt = conn.createStatement();
-	String sql = "SELECT * FROM iot_messages WHERE did="+id+" ORDER BY stored DESC LIMIT "+count+";";
+	String sql = "SELECT * FROM iot_messages WHERE did="+id+" ORDER BY time_stored DESC LIMIT "+count+";";
 	System.out.println(sql);
 	ResultSet rs = stmt.executeQuery(sql);
 
@@ -578,7 +578,7 @@ final class DataManagerService {
   /*
    * END MODIFICATIONS
    * 
-   * End new fucntions
+   * End new functions
    */
 }
 
