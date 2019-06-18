@@ -157,8 +157,8 @@ public class Oper_station_virt {
     orchestrationFlags.put("metadataSearch", false);
     //When true, the Orchestrator can turn to the Gatekeeper to initiate interCloud orchestration, if the Local Cloud had no adequate provider
     orchestrationFlags.put("enableInterCloud", false);
-  //When true, the Orchestrator skips intra cloud orchestration and turns to the Gatekeeper to initiate interCloud orchestration.
-    orchestrationFlags.put("triggerInterCloud", true);
+	//When true, the Orchestrator skips intra cloud orchestration and turns to the Gatekeeper to initiate interCloud orchestration.
+    orchestrationFlags.put("triggerInterCloud", false);
     
     //Add preferred local clouds in case there is more than one neighbour cloud with a data manager
     

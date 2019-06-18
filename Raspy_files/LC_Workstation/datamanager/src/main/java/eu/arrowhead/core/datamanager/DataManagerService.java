@@ -529,7 +529,7 @@ final class DataManagerService {
 	      int id = macToID(name, conn);
 	      if (id != -1) {
 	    	  Statement stmt = conn.createStatement();
-	    	  String sql = "INSERT INTO iot_files(did, filename, path) VALUES("+id+",\""+filename+"\",\""+path+"\");"; // Check bug ?
+	    	  String sql = "INSERT INTO iot_files(did, time_stored, filename, path) VALUES("+id+",NOW(),\""+filename+"\",\""+path+"\");"; // Check bug ?
 	    	  System.out.println(sql);
 	    	  int mid = stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 	    	  ResultSet rs = stmt.getGeneratedKeys();

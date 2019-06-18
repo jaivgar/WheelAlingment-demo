@@ -56,7 +56,7 @@ public class ERP_Consumer {
   private static TypeSafeProperties props = Utility.getProp();
   private static final String consumerSystemName = props.getProperty("consumer_system_name");
   
-  //New core system url
+  //New core system url -- It may not be necessary if the orchestration is successful
   private static final String dataManagerUrl = props.getProperty("dataman_url","http://localhost:8456/datamanager/historian");
 
   private ERP_Consumer(String[] args) {
@@ -64,35 +64,32 @@ public class ERP_Consumer {
     System.out.println("Working directory: " + System.getProperty("user.dir"));
 
     /*
-     * As I am calling a core system the orchestrator doesn't need to be involved
-     * and I get the url of the datamanager form the .conf file as it done for the orchestrator
+     * Even if I am calling a core system, the DataManager, it is recommended to perform normal orchestration
      */
     
     //Compile the URL for the orchestration request.
-    //getOrchestratorUrl(args);
+    getOrchestratorUrl(args);
 
     //Start a timer, to measure the speed of the Core Systems and the provider application system.
     long startTime = System.currentTimeMillis();
 
     //Compile the payload, that needs to be sent to the Orchestrator - THIS METHOD SHOULD BE MODIFIED ACCORDING TO YOUR NEEDS
-    //ServiceRequestForm srf = compileSRF();
+    ServiceRequestForm srf = compileSRF();
 
     //Sending the orchestration request and parsing the response
     /*
      * It gives an error: MessageBodyWriter not found for media type=application/json, 
      * type=class eu.arrowhead.client.common.model.ServiceRequestForm, 
      * 
-     * And as I am calling a core system the orchestrator doesn't need to be involved
-     * and I get the url of the datamanager form the .conf file as it done for the orchestrator
      */
     
-    //String providerUrl = sendOrchestrationRequest(srf);
+    String providerUrl = sendOrchestrationRequest(srf);
 
     //TODO: Include my logic here and change orchestrator request from before -- DONE
     
     //Connect to the provider, consuming its service - THIS METHOD SHOULD BE MODIFIED ACCORDING TO YOUR USE CASE
     //double temperature = consumeService(providerUrl);
-    String status = consumeService(dataManagerUrl);
+    String status = consumeService(providerUrl);
     
     System.out.println(status);
 
@@ -119,7 +116,7 @@ public class ERP_Consumer {
       the address, port and authenticationInfo fields can be set to anything.
       SystemName can be an arbitrarily chosen name, which makes sense for the use case.
      */
-    ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, "localhost", 8100, "null");
+    ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, "0.0.0.0", 8100, "null");
 
     //You can put any additional metadata you look for in a Service here (key-value pairs)
     Map<String, String> metadata = new HashMap<>();
@@ -144,7 +141,7 @@ public class ERP_Consumer {
     //When true, the Service Registry will only providers with the same exact metadata map as the consumer
     orchestrationFlags.put("metadataSearch", false);
     //When true, the Orchestrator can turn to the Gatekeeper to initiate interCloud orchestration, if the Local Cloud had no adequate provider
-    orchestrationFlags.put("enableInterCloud", true);
+    orchestrationFlags.put("enableInterCloud", false);
 
     //Build the complete service request form from the pieces, and return it
     ServiceRequestForm srf = new ServiceRequestForm.Builder(consumer).requestedService(service).orchestrationFlags(orchestrationFlags).build();

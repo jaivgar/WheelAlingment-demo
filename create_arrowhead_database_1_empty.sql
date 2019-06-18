@@ -90,10 +90,21 @@ CREATE TABLE `arrowhead_system` (
   `address` varchar(255) DEFAULT NULL,
   `authentication_info` varchar(2047) DEFAULT NULL,
   `system_name` varchar(255) DEFAULT NULL,
+  `port` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK3rj1egf6gi1enagslqry0pkkl` (`system_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `arrowhead_cloud`
+--
+
+LOCK TABLES `arrowhead_system` WRITE;
+/*!40000 ALTER TABLE `arrowhead_system` DISABLE KEYS */;
+INSERT INTO `arrowhead_system` VALUES (1,'0.0.0.0',null,'ERP_PLM_system',8100);
+/*!40000 ALTER TABLE `arrowhead_system` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `broker`
