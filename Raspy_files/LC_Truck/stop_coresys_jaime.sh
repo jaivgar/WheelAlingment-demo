@@ -3,6 +3,7 @@
 
 sleep_time=5
 echo Shutting down Core Systems
+pkill -f datamanager
 pkill -f orchestrator
 pkill -f gatekeeper
 pkill -f authorization
@@ -14,6 +15,7 @@ sleep "$sleep_time"
 
 if pgrep -f serviceregistry
 then
+  kill -KILL $(ps aux | grep 'datamanager' | awk '{print $2}')
   kill -KILL $(ps aux | grep 'orchestrator' | awk '{print $2}')
   kill -KILL $(ps aux | grep 'gatekeeper' | awk '{print $2}')
   kill -KILL $(ps aux | grep 'authorization' | awk '{print $2}')

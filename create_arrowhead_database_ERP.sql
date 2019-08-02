@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `arrowhead_test_cloud_2` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `arrowhead_test_cloud_2`;
+CREATE DATABASE  IF NOT EXISTS `arrowhead_test_cloud_1` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `arrowhead_test_cloud_1`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: localhost    Database: arrowhead_test_cloud_1
@@ -44,7 +44,7 @@ CREATE TABLE `arrowhead_cloud` (
 
 LOCK TABLES `arrowhead_cloud` WRITE;
 /*!40000 ALTER TABLE `arrowhead_cloud` DISABLE KEYS */;
-INSERT INTO `arrowhead_cloud` VALUES (1,'0.0.0.0','NotSetYet','LC_Virtual_Truck','gatekeeper','Factory',10446,'N'),(2,'0.0.0.0','NotSetYet','LC_ERP','gatekeeper','VTC',8446,'N');
+INSERT INTO `arrowhead_cloud` VALUES (1,'192.168.0.110','NotSetYet','LC_ERP','gatekeeper','VTC',8446,'N'),(2,'192.168.0.110','NotSetYet','LC_Virtual_Truck','gatekeeper','Factory',10446,'N');
 /*!40000 ALTER TABLE `arrowhead_cloud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -90,10 +90,21 @@ CREATE TABLE `arrowhead_system` (
   `address` varchar(255) DEFAULT NULL,
   `authentication_info` varchar(2047) DEFAULT NULL,
   `system_name` varchar(255) DEFAULT NULL,
+  `port` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK3rj1egf6gi1enagslqry0pkkl` (`system_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `arrowhead_system`
+--
+
+LOCK TABLES `arrowhead_system` WRITE;
+/*!40000 ALTER TABLE `arrowhead_system` DISABLE KEYS */;
+INSERT INTO `arrowhead_system` VALUES (1,'192.168.0.110',null,'ERP_PLM_system',8100);
+/*!40000 ALTER TABLE `arrowhead_system` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `broker`

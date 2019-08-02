@@ -55,6 +55,8 @@ public class ERP_Consumer {
   private static String orchestratorUrl;
   private static TypeSafeProperties props = Utility.getProp();
   private static final String consumerSystemName = props.getProperty("consumer_system_name");
+  private static final String consumerSystemAddress = props.getProperty("consumer_system_address", "192.168.0.110");
+  private static final String consumerSystemPort = props.getProperty("consumer_system_port", "8100");
   
   //New core system url -- It may not be necessary if the orchestration is successful
   private static final String dataManagerUrl = props.getProperty("dataman_url","http://localhost:8456/datamanager/historian");
@@ -89,6 +91,8 @@ public class ERP_Consumer {
     
     //Connect to the provider, consuming its service - THIS METHOD SHOULD BE MODIFIED ACCORDING TO YOUR USE CASE
     //double temperature = consumeService(providerUrl);
+    
+    //Send production order to DataManager
     String status = consumeService(providerUrl);
     
     System.out.println(status);
@@ -116,7 +120,7 @@ public class ERP_Consumer {
       the address, port and authenticationInfo fields can be set to anything.
       SystemName can be an arbitrarily chosen name, which makes sense for the use case.
      */
-    ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, "0.0.0.0", 8100, "null");
+    ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, consumerSystemAddress, Integer.parseUnsignedInt(consumerSystemPort), "null");
 
     //You can put any additional metadata you look for in a Service here (key-value pairs)
     Map<String, String> metadata = new HashMap<>();
@@ -149,6 +153,7 @@ public class ERP_Consumer {
     return srf;
   }
 
+  	//It performs 2 operations, receives the production order from USB (will change to ledger) and sends it to DataManager
   private String consumeService(String providerUrl) {
     /*
       Sending request to the provider, to the acquired URL. The method type and payload should be known beforehand.
@@ -158,6 +163,10 @@ public class ERP_Consumer {
 	  
 	//Need to compile the MULTIPART_FORM_DATA request with the file and make my own SendRequest to not send a JSON
 	//So it is not possible to use: Response getResponse = Utility.sendRequest(providerUrl, "GET", null);
+	  
+	  // TODO Obtain the file from the ledger
+	  // Added dependency and repository to pom
+	  
 	  
 	  //---TODO: Change path when using different USB in default.conf
 	  String path = props.getProperty("path", "/media/jaime/TOSHIBA/test.xml");

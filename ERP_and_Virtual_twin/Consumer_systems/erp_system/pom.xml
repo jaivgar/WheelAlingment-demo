@@ -11,6 +11,13 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+
   <parent>
     <artifactId>Consumer_systems</artifactId>
     <groupId>eu.arrowhead</groupId>
@@ -38,9 +45,16 @@
     </dependency>
     
     <dependency>
-	    <groupId>org.glassfish.jersey.media</groupId>
-	    <artifactId>jersey-media-multipart</artifactId>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-multipart</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.gitlab.eng-siena-ri.autonomous-wheel-alignment-station</groupId>
+      <artifactId>product-unit-hub-ledger-client</artifactId>
+      <version>v1.0.5</version>
+    </dependency>
+
 
   </dependencies>
 

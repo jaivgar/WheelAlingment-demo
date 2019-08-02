@@ -60,9 +60,11 @@ public class Oper_station_virt {
   private static String orchestratorUrl;
   private static TypeSafeProperties props = Utility.getProp();
   private static final String consumerSystemName = props.getProperty("consumer_system_name");
+  private static final String consumerSystemAddress = props.getProperty("consumer_system_address", "192.168.0.110");
+  private static final String consumerSystemPort = props.getProperty("consumer_system_port", "10100");
   
   //New core system url
-  private static final String dataManagerUrl = props.getProperty("dataman_url","http://localhost:8456/datamanager/");
+  private static final String dataManagerUrl = props.getProperty("dataman_url","http://localhost:8456/datamanager/historian");
 
   private Oper_station_virt(String[] args) {
     //Prints the working directory for extra information. Working directory should always contain a config folder with the app.conf file!
@@ -83,20 +85,26 @@ public class Oper_station_virt {
     //Connect to the provider, consuming its service - THIS METHOD SHOULD BE MODIFIED ACCORDING TO YOUR USE CASE
     //double temperature = consumeService(providerUrl);
     
-    //---TODO: Change path when using different files in app.conf
     String filename = props.getProperty("filename","test.xml");
     
+    //Connect to DataManager of ERP Cloud and get production file
     InputStream getStream = consumeService(providerUrl, filename);
     
     //---TODO: Change path when using different files in app.conf
     String path_download = props.getProperty("path_download", "/media/jaime/ESD-USB/");
     
+    //---TODO: With WiFi this would not be necessary
     boolean result = saveToDisk(getStream, path_download, filename);
+    
+    // TODO TOMORROW: Create new request the the DataManager of the Truck Local cloud to send the Production Order
+    // Problem found with the InterCloud Orchestration when using Preferred Providers
+    ServiceRequestForm srf2 = compileSRF_2();
+    
     
     long endTime = System.currentTimeMillis();
     System.out.println("DataManager and File sent and saved response time: " + Long.toString(endTime - startTime));
     
-  //Show a message dialog with the response from the service provider
+    //Show a message dialog with the response from the service provider
     JLabel label;
     if (result) {
     	label = new JLabel("The file was dowloaded and saved correctly in: " + path_download );
@@ -107,12 +115,6 @@ public class Oper_station_virt {
     label.setFont(new Font("Arial", Font.BOLD, 18));
     JOptionPane.showMessageDialog(null, label, "Provider Response", JOptionPane.INFORMATION_MESSAGE);
     
-    /*
-    //Show a message dialog with the response from the service provider
-    JLabel label = new JLabel("The response to the file upload is " + status );
-    label.setFont(new Font("Arial", Font.BOLD, 18));
-    JOptionPane.showMessageDialog(null, label, "Provider Response", JOptionPane.INFORMATION_MESSAGE);
-    */
   }
 
   public static void main(String[] args) {
@@ -127,7 +129,7 @@ public class Oper_station_virt {
       the address, port and authenticationInfo fields can be set to anything.
       SystemName can be an arbitrarily chosen name, which makes sense for the use case.
      */
-    ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, "localhost", 8101, "null");
+	  ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, consumerSystemAddress, Integer.parseUnsignedInt(consumerSystemPort), "null");
 
     //You can put any additional metadata you look for in a Service here (key-value pairs)
     /* No medatada as we are calling a core system
@@ -166,6 +168,32 @@ public class Oper_station_virt {
     ServiceRequestForm srf = new ServiceRequestForm.Builder(consumer).requestedService(service).orchestrationFlags(orchestrationFlags).build();
     System.out.println("Service Request payload: " + Utility.toPrettyJson(null, srf));
     return srf;
+  }
+  
+  private ServiceRequestForm compileSRF_2() {
+	  //ArrowheadSystem: systemName, (address, port, authenticationInfo)
+	  ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, consumerSystemAddress, Integer.parseUnsignedInt(consumerSystemPort), "null");
+	  
+	  //ArrowheadService: serviceDefinition (name), interfaces, metadata
+	  ArrowheadService service = new ArrowheadService("InsecureHistorian", Collections.singleton("JSON"), null);
+	  
+	  //Some of the orchestrationFlags the consumer can use, to influence the orchestration process
+	  Map<String, Boolean> orchestrationFlags = new HashMap<>();
+	  //When true, the orchestration store will not be queried for "hard coded" consumer-provider connections
+	  orchestrationFlags.put("overrideStore", true);
+	  //When true, the Service Registry will ping every potential provider, to see if they are alive/available on the network
+	  orchestrationFlags.put("pingProviders", false);
+	  //When true, the Service Registry will only providers with the same exact metadata map as the consumer
+	  orchestrationFlags.put("metadataSearch", false);
+	  //When true, the Orchestrator can turn to the Gatekeeper to initiate interCloud orchestration, if the Local Cloud had no adequate provider
+	  orchestrationFlags.put("enableInterCloud", false);
+	  //When true, the Orchestrator skips intra cloud orchestration and turns to the Gatekeeper to initiate interCloud orchestration.
+	  orchestrationFlags.put("triggerInterCloud", false);
+	  
+	  //Build the complete service request form from the pieces, and return it
+	  ServiceRequestForm srf = new ServiceRequestForm.Builder(consumer).requestedService(service).orchestrationFlags(orchestrationFlags).build();
+	  System.out.println("Service Request payload: " + Utility.toPrettyJson(null, srf));
+	  return srf;
   }
 
   private InputStream consumeService(String providerUrl, String filename) {

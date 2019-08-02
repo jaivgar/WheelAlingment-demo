@@ -60,6 +60,8 @@ public class Oper_station_truck {
   private static String orchestratorUrl;
   private static TypeSafeProperties props = Utility.getProp();
   private static final String consumerSystemName = props.getProperty("consumer_system_name");
+  private static final String consumerSystemAddress = props.getProperty("consumer_system_address", "192.168.0.115");
+  private static final String consumerSystemPort = props.getProperty("consumer_system_port", "8100");
   
   //New core system url
   //private static final String dataManagerUrl = props.getProperty("dataman_url","http://localhost:8456/datamanager/");
@@ -134,7 +136,7 @@ public class Oper_station_truck {
       the address, port and authenticationInfo fields can be set to anything.
       SystemName can be an arbitrarily chosen name, which makes sense for the use case.
      */
-    ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, "localhost", 8102, "null");
+	ArrowheadSystem consumer = new ArrowheadSystem(consumerSystemName, consumerSystemAddress, Integer.parseUnsignedInt(consumerSystemPort), "null");
 
     //You can put any additional metadata you look for in a Service here (key-value pairs)
     /* No medatada as we are calling a core system
