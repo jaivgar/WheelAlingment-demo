@@ -49,6 +49,18 @@ import javax.ws.rs.client.ClientBuilder;
 import java.io.File;
 import java.io.IOException;
 
+/* Ledger Library
+ * 
+ */
+import it.eng.productunithubledgerclient.base.BlockchainFactory;
+import it.eng.productunithubledgerclient.base.LedgerClient;
+import it.eng.productunithubledgerclient.exception.ProductUnitHubException;
+import it.eng.productunithubledgerclient.model.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+
 public class ERP_Consumer {
 
   private static boolean isSecure;
@@ -61,6 +73,8 @@ public class ERP_Consumer {
   //New core system url -- It may not be necessary if the orchestration is successful
   private static final String dataManagerUrl = props.getProperty("dataman_url","http://localhost:8456/datamanager/historian");
 
+  static LedgerClient ledgerClient;
+  
   private ERP_Consumer(String[] args) {
     //Prints the working directory for extra information. Working directory should always contain a config folder with the app.conf file!
     System.out.println("Working directory: " + System.getProperty("user.dir"));
@@ -166,7 +180,37 @@ public class ERP_Consumer {
 	  
 	  // TODO Obtain the file from the ledger
 	  // Added dependency and repository to pom
+	  // Upload a Chassis DTO and retrieve the data as example
+	  try {
+		  BlockchainFactory factory = new BlockchainFactory();
+	      ledgerClient = factory.getType();
+	  }catch (ProductUnitHubException e) {
+		  e.printStackTrace();
+      }
 	  
+	  Collection<ChassisDTO> chassisDTOList = new ArrayList<>();
+      ChassisDTO chassisDTO = buildChassisDTO();
+      chassisDTO.setChassisId( "Test" );
+      chassisDTO.setComponent( "Integration" );
+      chassisDTO.setSubComponent( "End2End" );
+      
+      chassisDTOList.add(chassisDTO);
+	  
+	  try {
+		  ledgerClient.storeProcessStepRouting(chassisDTOList);
+	  }catch (ProductUnitHubException e) {
+		  e.printStackTrace();
+      }
+	  
+	  ChassisDTO chassisDTO_Received;
+	  try {
+		  chassisDTO_Received = ledgerClient.getProcessStepRouting("Test", "Integration", "End2End");
+		  System.out.println(" ChassisDTO Id received: "+ chassisDTO_Received.getChassisId());
+	  }catch (ProductUnitHubException e) {
+		  e.printStackTrace();
+      }
+      
+	  System.out.println("Ledger test finished");
 	  
 	  //---TODO: Change path when using different USB in default.conf
 	  String path = props.getProperty("path", "/media/jaime/TOSHIBA/test.xml");
@@ -222,6 +266,67 @@ public class ERP_Consumer {
       return readout.getE().get(0).getV();
     }
     */
+  }
+  
+  private static ChassisDTO buildChassisDTO() {
+		ChassisDTO chassisDTO = new ChassisDTO();
+		chassisDTO.setChassisId("A   819631");
+		chassisDTO.setComponent("VE");
+		chassisDTO.setSubComponent(" ");
+
+		ProcessStep processStep = new ProcessStep();
+		//processStep.setId("001_8415E5D-47A2-4E79-BF1C-1F56B105AC6-" + getNextInt());
+		processStep.setId("001_8415E5D-47A2-4E79-BF1C-1F56B105AC6-Iterator");
+		processStep.setName("WheelAlignment");
+		processStep.setSequenceNo(0);
+
+		WorkcellResource workcellResource = new WorkcellResource();
+		workcellResource.setId("CTPP-01A");
+		processStep.setWorkcellResource(workcellResource);
+
+		Operation operation = new Operation();
+		operation.setId("");
+		
+		List <InstructionText> texts = new ArrayList <InstructionText> ();
+		InstructionText text = new InstructionText();
+		text.setSequenceNo(0);
+		text.setText("Perform Nutrunner job");
+		texts.add(text);
+		operation.setInstructionTexts(texts);
+		
+		
+		List <EquipmentSpecification> equipmentSpecifications = new ArrayList <EquipmentSpecification> ();
+		EquipmentSpecification equipmentSpecification = new EquipmentSpecification();
+		equipmentSpecification.setSequenceNo(0);
+		equipmentSpecification.setQuantity(3);
+		equipmentSpecifications.add(equipmentSpecification);
+		
+		List <EquipmentRequirement> equipmentRequirements = new ArrayList <EquipmentRequirement> ();
+		EquipmentRequirement equipmentRequirement = new EquipmentRequirement();
+		equipmentRequirement.setSequenceNo(0);
+		equipmentRequirement.setSpecifications(equipmentSpecifications);
+		equipmentRequirements.add(equipmentRequirement);
+		
+		operation.setEquipmentRequirements(equipmentRequirements);
+		
+		List <OperationStep> operationSteps = new ArrayList<OperationStep>();
+		OperationStep operationStep = new OperationStep() ;
+		operationStep.setDescription("OperationStep: Nutrunner engage");
+		operationStep.setSequenceNo(0);
+		
+		operationSteps.add(operationStep);
+		operation.setOperationSteps(operationSteps);
+		
+		
+		List <Operation> billofOperations = new ArrayList<Operation>();
+		billofOperations.add(operation);
+		processStep.setBillOfOperation(billofOperations);
+		
+		ArrayList<ProcessStep> processStepCollection = new ArrayList<>();
+		processStepCollection.add(processStep);
+		chassisDTO.getBillOfProcessSteps().add(processStep);
+
+		return chassisDTO;
   }
 
    /*
