@@ -22,6 +22,7 @@ import eu.arrowhead.client.common.model.ServiceRequestForm;
 import java.awt.Font;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import javax.net.ssl.SSLContext;
 import javax.swing.JLabel;
@@ -30,6 +31,7 @@ import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NoContentException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.Response.Status;
@@ -48,6 +50,9 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.ClientBuilder;
 import java.io.File;
 import java.io.IOException;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /* Ledger Library
  * 
@@ -83,11 +88,11 @@ public class ERP_Consumer {
      * Even if I am calling a core system, the DataManager, it is recommended to perform normal orchestration
      */
     
-    //Compile the URL for the orchestration request.
-    getOrchestratorUrl(args);
-
     //Start a timer, to measure the speed of the Core Systems and the provider application system.
     long startTime = System.currentTimeMillis();
+    
+    //Compile the URL for the orchestration request.
+    getOrchestratorUrl(args);
 
     //Compile the payload, that needs to be sent to the Orchestrator - THIS METHOD SHOULD BE MODIFIED ACCORDING TO YOUR NEEDS
     ServiceRequestForm srf = compileSRF();
@@ -167,7 +172,11 @@ public class ERP_Consumer {
     return srf;
   }
 
-  	//It performs 2 operations, receives the production order from USB (will change to ledger) and sends it to DataManager
+  	/**
+  	 * It performs 2 tasks, receives the production order from ledger (previously from USB) and sends it to DataManager
+  	 * @param providerUrl
+  	 * @return
+  	 */
   private String consumeService(String providerUrl) {
     /*
       Sending request to the provider, to the acquired URL. The method type and payload should be known beforehand.
@@ -178,49 +187,25 @@ public class ERP_Consumer {
 	//Need to compile the MULTIPART_FORM_DATA request with the file and make my own SendRequest to not send a JSON
 	//So it is not possible to use: Response getResponse = Utility.sendRequest(providerUrl, "GET", null);
 	  
-	  // TODO Obtain the file from the ledger
-	  // Added dependency and repository to pom
-	  // Upload a Chassis DTO and retrieve the data as example
-	  try {
-		  BlockchainFactory factory = new BlockchainFactory();
-	      ledgerClient = factory.getType();
-	  }catch (ProductUnitHubException e) {
-		  e.printStackTrace();
-      }
-	  
-	  Collection<ChassisDTO> chassisDTOList = new ArrayList<>();
-      ChassisDTO chassisDTO = buildChassisDTO();
-      chassisDTO.setChassisId( "Test" );
-      chassisDTO.setComponent( "Integration" );
-      chassisDTO.setSubComponent( "End2End" );
-      
-      chassisDTOList.add(chassisDTO);
-	  
-	  try {
-		  ledgerClient.storeProcessStepRouting(chassisDTOList);
-	  }catch (ProductUnitHubException e) {
-		  e.printStackTrace();
-      }
-	  
-	  ChassisDTO chassisDTO_Received;
-	  try {
-		  chassisDTO_Received = ledgerClient.getProcessStepRouting("Test", "Integration", "End2End");
-		  System.out.println(" ChassisDTO Id received: "+ chassisDTO_Received.getChassisId());
-	  }catch (ProductUnitHubException e) {
-		  e.printStackTrace();
-      }
-      
-	  System.out.println("Ledger test finished");
 	  
 	  //---TODO: Change path when using different USB in default.conf
 	  String path = props.getProperty("path", "/media/jaime/TOSHIBA/test.xml");
 	  
+	  File OperationXML = null;
+	  try {
+		  OperationXML = OperationFromLedger();
+	  } catch (NoContentException e1) {
+		  e1.printStackTrace();
+	  }
+	  
 	  FileDataBodyPart filePart;
 	  try {
-		  filePart = new FileDataBodyPart("file", new File(path));
+		  //filePart = new FileDataBodyPart("file", new File(path));
+		  filePart = new FileDataBodyPart("file", OperationXML);
+		  
 	  }catch(NullPointerException e) {
 		  e.printStackTrace();
-		  return "Path of file is null";
+		  return "Path of file is null, information not retrieved from Ledger!";
 	  }
 	  
 	  FormDataMultiPart formDataMultiPart = new FormDataMultiPart();
@@ -268,65 +253,75 @@ public class ERP_Consumer {
     */
   }
   
-  private static ChassisDTO buildChassisDTO() {
-		ChassisDTO chassisDTO = new ChassisDTO();
-		chassisDTO.setChassisId("A   819631");
-		chassisDTO.setComponent("VE");
-		chassisDTO.setSubComponent(" ");
+  /** Obtain the XML file from the ledger with Operation instructions
+   * The ChassisDTO should have been uploaded before from Ledger_PreConf application
+   */
+  private File OperationFromLedger() throws NoContentException{
+	  
+	  //Obtain connection to ledger 
+	  try {
+		  BlockchainFactory factory = new BlockchainFactory();
+	      ledgerClient = factory.getType();
+	  }catch (ProductUnitHubException e) {
+		  e.printStackTrace();
+      }
+	  
+	  //Received the DTO from Ledger
+	  ChassisDTO chassisDTODownloaded = null;
+	  try {
+		  chassisDTODownloaded = ledgerClient.getProcessStepRouting("Tet", "Integration", "End2End");
+		  System.out.println(" ChassisDTO Id received: "+ chassisDTODownloaded.getChassisId());
+	  }catch (ProductUnitHubException e) {
+		  e.printStackTrace();
+      }
+      
+	  
+	  
+	  
+	  //Retrieve the XML file with the information from the DTO
+	  String XmlFileName = null;
+	  
+	  if (chassisDTODownloaded != null) {
+		  Iterator<ProcessStep> ItProcessStep = chassisDTODownloaded.getBillOfProcessSteps().iterator();
 
-		ProcessStep processStep = new ProcessStep();
-		//processStep.setId("001_8415E5D-47A2-4E79-BF1C-1F56B105AC6-" + getNextInt());
-		processStep.setId("001_8415E5D-47A2-4E79-BF1C-1F56B105AC6-Iterator");
-		processStep.setName("WheelAlignment");
-		processStep.setSequenceNo(0);
+		  if (ItProcessStep.hasNext()) {
+			  if (!ItProcessStep.next().getBillOfOperation().isEmpty()) {
+				  Iterator<Operation> ItOperation = ItProcessStep.next().getBillOfOperation().iterator();
+				  while (ItOperation.hasNext()) {
+					  Operation operation = ItOperation.next();
+					  XmlFileName = operation.getDescription();
+					  if (operation.getInstructionTexts().iterator().hasNext()) {
+						  String FileContent = operation.getInstructionTexts().iterator().next().getText();
 
-		WorkcellResource workcellResource = new WorkcellResource();
-		workcellResource.setId("CTPP-01A");
-		processStep.setWorkcellResource(workcellResource);
-
-		Operation operation = new Operation();
-		operation.setId("");
-		
-		List <InstructionText> texts = new ArrayList <InstructionText> ();
-		InstructionText text = new InstructionText();
-		text.setSequenceNo(0);
-		text.setText("Perform Nutrunner job");
-		texts.add(text);
-		operation.setInstructionTexts(texts);
-		
-		
-		List <EquipmentSpecification> equipmentSpecifications = new ArrayList <EquipmentSpecification> ();
-		EquipmentSpecification equipmentSpecification = new EquipmentSpecification();
-		equipmentSpecification.setSequenceNo(0);
-		equipmentSpecification.setQuantity(3);
-		equipmentSpecifications.add(equipmentSpecification);
-		
-		List <EquipmentRequirement> equipmentRequirements = new ArrayList <EquipmentRequirement> ();
-		EquipmentRequirement equipmentRequirement = new EquipmentRequirement();
-		equipmentRequirement.setSequenceNo(0);
-		equipmentRequirement.setSpecifications(equipmentSpecifications);
-		equipmentRequirements.add(equipmentRequirement);
-		
-		operation.setEquipmentRequirements(equipmentRequirements);
-		
-		List <OperationStep> operationSteps = new ArrayList<OperationStep>();
-		OperationStep operationStep = new OperationStep() ;
-		operationStep.setDescription("OperationStep: Nutrunner engage");
-		operationStep.setSequenceNo(0);
-		
-		operationSteps.add(operationStep);
-		operation.setOperationSteps(operationSteps);
-		
-		
-		List <Operation> billofOperations = new ArrayList<Operation>();
-		billofOperations.add(operation);
-		processStep.setBillOfOperation(billofOperations);
-		
-		ArrayList<ProcessStep> processStepCollection = new ArrayList<>();
-		processStepCollection.add(processStep);
-		chassisDTO.getBillOfProcessSteps().add(processStep);
-
-		return chassisDTO;
+						  try {
+							  BufferedWriter writer = new BufferedWriter(new FileWriter(XmlFileName));
+							  writer.write(FileContent);
+							  writer.close();
+						  }catch (IOException e) {
+							  e.printStackTrace();
+						  }
+					  }
+				  }
+			  }
+		  }  
+	  }
+	  
+	  //Create a file with the information retrieved
+	  try {
+		  File XmlFile = new File(XmlFileName);
+		  
+		  if (XmlFile.length() == 0) {
+			  throw new NoContentException("Ledger contains no information (instructionTexts) to perform Operation");
+		  }
+		  System.out.println("Ledger connection finished");
+		  
+		  return XmlFile;
+		  
+	  }catch (NullPointerException e) {
+		  e.printStackTrace();
+		  System.out.println("Ledger information has no file name, in Operation description so invalid inputs");
+	  }
+	  return null;
   }
 
    /*

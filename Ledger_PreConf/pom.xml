@@ -1,0 +1,83 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" 
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.eislab</groupId>
+  <artifactId>Ledger-Pre-Conf</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Ledger Pre Configuration</name>
+  <description>Upload to the Ledger all the necessary data prior to the start of the whell alingment demo</description>
+  
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
+  
+  <packaging>jar</packaging> <!-- Default packaging -->
+  
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <maven.compiler.version>3.8.0</maven.compiler.version>
+    <maven.dependency.version>2.5.1</maven.dependency.version>
+    <maven.jar.version>3.0.2</maven.jar.version>
+    <maven.resources.version>2.7</maven.resources.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+    <dependencies>
+	    <dependency>
+	      <groupId>com.gitlab.eng-siena-ri.autonomous-wheel-alignment-station</groupId>
+	      <artifactId>product-unit-hub-ledger-client</artifactId>
+	      <version>v1.0.7</version>
+	    </dependency>
+    </dependencies>
+    
+    <build>
+    	<defaultGoal>package</defaultGoal>
+    	
+    	<plugins>
+    	
+    	  <!-- Make this jar executable -->
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-jar-plugin</artifactId>
+	        <version>${maven.jar.version}</version>
+	        <configuration>
+	          <!-- MainClass in manifest make a executable jar -->
+	          <archive>
+	            <manifest>
+	              <addClasspath>true</addClasspath>
+	              <classpathPrefix>lib/</classpathPrefix>
+	              <mainClass>com.eislab.ledger.uploader.Upload_ChassisDTO</mainClass> 
+	            </manifest>
+	          </archive>
+	        </configuration>
+	      </plugin>
+	      
+	      <!-- Copy project dependency -->
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-dependency-plugin</artifactId>
+	        <version>${maven.dependency.version}</version>
+	        <executions>
+	          <execution>
+	            <id>copy-dependencies</id>
+	            <phase>package</phase>
+	            <goals>
+	              <goal>copy-dependencies</goal>
+	            </goals>
+	            <configuration>
+	              <!-- exclude junit, we need runtime dependency only -->
+	              <outputDirectory>${basedir}/target/lib/</outputDirectory>
+	            </configuration>
+	          </execution>
+	        </executions>
+	      </plugin>
+      
+    	</plugins>
+    	
+    </build>
+      
+</project>
