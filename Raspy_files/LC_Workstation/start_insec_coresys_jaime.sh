@@ -34,4 +34,8 @@ nohup java -jar orchestrator-4.0.jar -d -daemon > insecure_orch.log &
 echo Orchestrator started
 sleep "$sleep_time"
 
+cd ../../datamanager/target
+nohup java -jar datamanager-4.0.jar -d -daemon > insecure_orch.log &
+echo Datamanager started
+sleep "$sleep_time"
 
